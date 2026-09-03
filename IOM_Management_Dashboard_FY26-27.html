@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IOM Plan vs Achieved — FY 2026–27</title>
+  <style>
+    :root {
+      --navy: #17365d;
+      --blue: #4472c4;
+      --green: #70ad47;
+      --amber: #d79b00;
+      --ink: #17202a;
+      --muted: #657083;
+      --line: #dce2ea;
+      --surface: #f5f7fa;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--surface);
+    }
+    .page { max-width: 1320px; margin: 0 auto; padding: 28px; }
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px;
+      color: var(--white);
+      background: var(--navy);
+      border-radius: 12px;
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -.02em; }
+    h2 { margin: 0 0 14px; color: var(--navy); font-size: 19px; }
+    p { margin: 0; }
+    .subtitle { color: #dce8f5; }
+    .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    button {
+      border: 1px solid rgba(255,255,255,.42);
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: var(--white);
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 650;
+    }
+    button.active { border-color: var(--white); color: var(--navy); background: var(--white); }
+    button.print { border-radius: 7px; }
+    .meta { margin: 13px 2px 22px; color: var(--muted); font-size: 13px; }
+    .grid { display: grid; gap: 18px; }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--white);
+    }
+    .section { margin-top: 24px; }
+    .label { color: var(--muted); font-size: 13px; }
+    .value { margin-top: 5px; font-size: 27px; font-weight: 750; letter-spacing: -.03em; }
+    .value.green { color: #3f7d26; }
+    .value.blue { color: var(--blue); }
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .kpi { padding-right: 14px; border-right: 1px solid var(--line); }
+    .kpi:last-child { border-right: 0; }
+    .progress { height: 10px; margin-top: 18px; overflow: hidden; border-radius: 999px; background: #e8edf3; }
+    .progress > span { display: block; height: 100%; border-radius: inherit; background: var(--green); }
+    .progress-label { display: flex; justify-content: space-between; margin-top: 7px; color: var(--muted); font-size: 12px; }
+    .category-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .category-title { font-weight: 750; color: var(--navy); }
+    .count { color: var(--muted); font-size: 12px; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .mini-value { margin-top: 4px; font-size: 21px; font-weight: 720; }
+    table { width: 100%; border-collapse: collapse; background: var(--white); }
+    th, td { padding: 11px 13px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--white); background: var(--blue); font-size: 13px; }
+    td.num, th.num { text-align: right; }
+    tr:last-child td { border-bottom: 0; }
+    .chart { display: flex; align-items: flex-end; gap: 13px; height: 235px; padding: 20px 8px 0; border-bottom: 1px solid var(--line); }
+    .bar-group { display: flex; flex: 1; align-items: flex-end; justify-content: center; gap: 5px; height: 100%; position: relative; }
+    .bar { width: min(28px, 40%); min-height: 1px; border-radius: 4px 4px 0 0; position: relative; }
+    .bar.plan { background: #aab4c2; }
+    .bar.achieved { background: var(--green); }
+    .bar.balance { background: var(--blue); }
+    .bar span {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .month-label { position: absolute; bottom: -23px; font-size: 11px; color: var(--muted); }
+    .legend { display: flex; gap: 18px; margin-top: 32px; color: var(--muted); font-size: 12px; }
+    .legend i { display: inline-block; width: 11px; height: 11px; margin-right: 5px; border-radius: 2px; vertical-align: -1px; }
+    .note { margin-top: 18px; padding: 14px 16px; border-left: 4px solid var(--blue); background: #edf3fb; color: #42526a; font-size: 13px; }
+    .foot { margin-top: 24px; color: var(--muted); font-size: 12px; }
+    @media (max-width: 900px) {
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      header { flex-direction: column; }
+      .actions { justify-content: flex-start; }
+    }
+    @media print {
+      body { background: var(--white); }
+      .page { max-width: none; padding: 8mm; }
+      button.print { display: none; }
+      .card { break-inside: avoid; }
+      .section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>IOM Plan vs Achieved</h1>
+        <p class="subtitle">Awarded IOM, procurement and overall balance work · FY 2026–27</p>
+      </div>
+      <div class="actions">
+        <button class="period active" data-period="YTD">YTD</button>
+        <button class="period" data-period="QTD">QTD</button>
+        <button class="period" data-period="MTD">MTD</button>
+        <button class="print" onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </header>
+
+    <div class="meta"><span id="range">1 Apr–31 Aug 2026</span> · MTD is August 2026 · Amounts in ₹ crore, excluding tax</div>
+
+    <section class="card">
+      <h2>Overall plan vs achieved</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="label">Plan / budget</div><div class="value" id="overall-plan"></div></div>
+        <div class="kpi"><div class="label">Awarded</div><div class="value green" id="overall-achieved"></div></div>
+        <div class="kpi"><div class="label">Variance to plan</div><div class="value blue" id="variance"></div></div>
+      </div>
+      <div class="progress"><span id="progress"></span></div>
+      <div class="progress-label"><span id="rate"></span><span id="comparison"></span></div>
+    </section>
+
+    <section class="section">
+      <h2>Awarded IOM / Procurement / Balance</h2>
+      <div class="grid grid-3">
+        <article class="card">
+          <div class="category-head"><span class="category-title">Awarded IOM</span><span class="count" id="iom-count"></span></div>
+          <div class="pair">
+            <div><div class="label">Budget</div><div class="mini-value" id="iom-plan"></div></div>
+            <div><div class="label">Awarded</div><div class="mini-value green" id="iom-achieved"></div></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="category-head"><span class="category-title">Procurement</span><span class="count" id="proc-count"></span></div>
+          <div class="pair">
+            <div><div class="label">Budget</div><div class="mini-value" id="proc-plan"></div></div>
+            <div><div class="label">Awarded</div><div class="mini-value green" id="proc-achieved"></div></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="category-head"><span class="category-title">Balance</span><span class="count" id="balance-count"></span></div>
+          <div class="label">PTE scheduled in period</div>
+          <div class="mini-value blue" id="balance"></div>
+          <p class="label" style="margin-top:12px">Uses Actual/CBE work-award date, then revised plan date.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section grid grid-2">
+      <div class="card">
+        <h2>TES vs non-TES awards</h2>
+        <table>
+          <thead><tr><th>Classification</th><th class="num">Plan</th><th class="num">Achieved</th></tr></thead>
+          <tbody>
+            <tr><td>TES</td><td class="num" id="tes-plan"></td><td class="num" id="tes-achieved"></td></tr>
+            <tr><td>Non-TES</td><td class="num" id="non-tes-plan"></td><td class="num" id="non-tes-achieved"></td></tr>
+          </tbody>
+        </table>
+        <div class="note">Overall awards include records where TES / Non-TES classification is not filled.</div>
+      </div>
+      <div class="card">
+        <h2>Balance overview</h2>
+        <div class="grid grid-2">
+          <div><div class="label">Recorded balance PTE</div><div class="mini-value">₹74.84 Cr</div></div>
+          <div><div class="label">Awards scheduled after Aug</div><div class="mini-value">77</div></div>
+          <div><div class="label">September balance PTE</div><div class="mini-value blue">₹23.54 Cr</div></div>
+          <div><div class="label">BOQ dependency value</div><div class="mini-value">₹35.18 Cr</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid grid-2">
+      <div class="card">
+        <h2>Monthly plan vs achieved</h2>
+        <div class="chart" id="monthly-chart"></div>
+        <div class="legend"><span><i style="background:#aab4c2"></i>Plan / budget</span><span><i style="background:#70ad47"></i>Achieved awards</span></div>
+      </div>
+      <div class="card">
+        <h2>Overall balance award schedule</h2>
+        <div class="chart" id="balance-chart"></div>
+        <div class="legend"><span><i style="background:#4472c4"></i>Balance PTE</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>BOQ and design dependencies</h2>
+      <table>
+        <thead><tr><th>Team</th><th>Dependency</th><th class="num">Planned awards</th><th class="num">Recorded PTE</th></tr></thead>
+        <tbody>
+          <tr><td>C&amp;B</td><td>BOQ</td><td class="num">19</td><td class="num">₹22.16 Cr</td></tr>
+          <tr><td>Design</td><td>BOQ</td><td class="num">15</td><td class="num">₹13.02 Cr</td></tr>
+          <tr><td>Design</td><td>Drawing</td><td class="num">16</td><td class="num">₹17.52 Cr</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="note">
+      Plan = unique awarded-IOM budget + unique procurement-IOM budget + recorded PTE scheduled in the period.
+      Achieved = unique contract and procurement award values. Blank amount values are excluded.
+    </div>
+    <p class="foot">Prepared from IOM Contracts FY26–27, IOM Procurement FY26–27 and TES Balance · supplied 3 Sep 2026</p>
+  </main>
+
+  <script>
+    const periods = {
+      YTD: { range:"1 Apr–31 Aug 2026", plan:138.85, achieved:158.95, rate:114.5, iomPlan:61.66, iomAchieved:88.28, iomCount:101, procPlan:77.19, procAchieved:70.67, procCount:57, balance:0, balanceCount:18, tesPlan:46.67, tesAchieved:74.27, nonTesPlan:5.20, nonTesAchieved:5.10 },
+      QTD: { range:"1 Jul–31 Aug 2026", plan:44.03, achieved:58.78, rate:133.5, iomPlan:29.78, iomAchieved:46.54, iomCount:45, procPlan:14.25, procAchieved:12.24, procCount:24, balance:0, balanceCount:16, tesPlan:16.97, tesAchieved:34.42, nonTesPlan:2.30, nonTesAchieved:2.41 },
+      MTD: { range:"1–31 Aug 2026", plan:27.06, achieved:40.24, rate:148.7, iomPlan:22.27, iomAchieved:36.39, iomCount:21, procPlan:4.79, procAchieved:3.85, procCount:9, balance:0, balanceCount:9, tesPlan:12.74, tesAchieved:27.55, nonTesPlan:1.28, nonTesAchieved:1.45 }
+    };
+    const money = value => `₹${value.toFixed(2)} Cr`;
+    const set = (id, value) => document.getElementById(id).textContent = value;
+    function render(period) {
+      const d = periods[period];
+      set("range", d.range);
+      set("overall-plan", money(d.plan));
+      set("overall-achieved", money(d.achieved));
+      set("variance", money(d.achieved - d.plan));
+      set("rate", `${d.rate.toFixed(1)}% achieved`);
+      set("comparison", `${money(d.achieved)} / ${money(d.plan)}`);
+      document.getElementById("progress").style.width = `${Math.min(d.rate, 100)}%`;
+      set("iom-plan", money(d.iomPlan)); set("iom-achieved", money(d.iomAchieved)); set("iom-count", `${d.iomCount} awarded`);
+      set("proc-plan", money(d.procPlan)); set("proc-achieved", money(d.procAchieved)); set("proc-count", `${d.procCount} awarded`);
+      set("balance", money(d.balance)); set("balance-count", `${d.balanceCount} planned awards`);
+      set("tes-plan", money(d.tesPlan)); set("tes-achieved", money(d.tesAchieved));
+      set("non-tes-plan", money(d.nonTesPlan)); set("non-tes-achieved", money(d.nonTesAchieved));
+      document.querySelectorAll(".period").forEach(button => button.classList.toggle("active", button.dataset.period === period));
+    }
+    function bars(target, labels, series, classes) {
+      const root = document.getElementById(target);
+      const max = Math.max(...series.flat());
+      root.innerHTML = labels.map((label, i) => `
+        <div class="bar-group">
+          ${series.map((values, s) => `<div class="bar ${classes[s]}" style="height:${Math.max((values[i] / max) * 100, 1)}%"><span>${values[i].toFixed(1)}</span></div>`).join("")}
+          <div class="month-label">${label}</div>
+        </div>`).join("");
+    }
+    document.querySelectorAll(".period").forEach(button => button.addEventListener("click", () => render(button.dataset.period)));
+    bars("monthly-chart", ["Apr","May","Jun","Jul","Aug"], [[52.77,33.47,8.58,16.96,27.06],[54.72,35.20,10.26,18.54,40.24]], ["plan","achieved"]);
+    bars("balance-chart", ["Sep","Oct","Nov","Dec","Feb","Mar"], [[23.54,16.49,9.51,9.37,5.47,9.82]], ["balance"]);
+    render("YTD");
+  </script>
+</body>
+</html>
